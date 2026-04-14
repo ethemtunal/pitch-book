@@ -50,7 +50,7 @@ class MongoSongStore(SongStore, MongoDBClientCommon):
             match_stage,
             {"$group": {"_id": None, "avg": {"$avg": "$difficulty"}}},
         ]
-        result = list(self.collection.aggregate(pipeline))
+        result = list(self.collection.aggregate(pipeline))  # type: ignore[arg-type]
         return result[0]["avg"] if result else None
 
     def search(self, message: str) -> list[SongEntity]:
