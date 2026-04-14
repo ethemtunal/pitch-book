@@ -1,0 +1,18 @@
+[project]
+name = "pitch-book"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "flask>=3.1.3",
+    "pydantic>=2.13.0",
+    "pymongo>=4.16.0",
+]
+
+[dependency-groups]
+dev = [
+    "mypy>=1.20.1",
+    "pytest>=9.0.3",
+    "ruff>=0.15.10",
+]
