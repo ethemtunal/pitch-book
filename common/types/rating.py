@@ -15,3 +15,9 @@ class RatingEntity(RatingCreate):
     @classmethod
     def coerce_object_id(cls, v: object) -> str:
         return str(v)
+
+
+class RatingStats(BaseModel):
+    avg: float
+    lowest: int
+    highest: int

@@ -6,10 +6,10 @@ from datetime import UTC
 from pymongo import MongoClient
 from pymongo.synchronous.client_session import ClientSession
 
-from adapters.document_stores.document_db.rate_store import MongoRatingStore
+from adapters.document_stores.document_db.rating_store import MongoRatingStore
 from adapters.document_stores.document_db.song_store import MongoSongStore
 from adapters.document_stores.document_store import DocumentStore
-from adapters.document_stores.rate_store import RatingStore
+from adapters.document_stores.rating_store import RatingStore
 from adapters.document_stores.song_store import SongStore
 from common.configuration import Config
 
@@ -21,7 +21,7 @@ class DocumentDBDocumentStore(DocumentStore):
     def __init__(self, client_session: ClientSession):
         self.client_session = client_session
         self._song_store: SongStore | None = None
-        self._rate_store: RatingStore | None = None
+        self._rating_store: RatingStore | None = None
 
     @property
     def song(self) -> SongStore:
@@ -33,11 +33,11 @@ class DocumentDBDocumentStore(DocumentStore):
 
     @property
     def rating(self) -> RatingStore:
-        if self._rate_store is None:
-            self._rate_store = MongoRatingStore(
+        if self._rating_store is None:
+            self._rating_store = MongoRatingStore(
                 client_session=self.client_session,
             )
-        return self._rate_store
+        return self._rating_store
 
 
 @contextmanager
