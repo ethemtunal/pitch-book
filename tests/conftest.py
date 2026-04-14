@@ -11,7 +11,7 @@ from common.configuration import Config
 
 
 @pytest.fixture(scope="function")
-def document_db_session(integration_testconf):
+def document_db_session():
     config = Config()
     client = MongoClient(
         config.document_db_uri, retryWrites=False, tz_aware=True, tzinfo=UTC
