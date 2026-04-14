@@ -6,11 +6,11 @@ from datetime import UTC
 from pymongo import MongoClient
 from pymongo.synchronous.client_session import ClientSession
 
-from adapters.document_stores.document_db.rates_store import MongoRatingStore
-from adapters.document_stores.document_db.songs_store import MongoSongStore
+from adapters.document_stores.document_db.rate_store import MongoRatingStore
+from adapters.document_stores.document_db.song_store import MongoSongStore
 from adapters.document_stores.document_store import DocumentStore
-from adapters.document_stores.rates_store import RatingStore
-from adapters.document_stores.songs_store import SongStore
+from adapters.document_stores.rate_store import RatingStore
+from adapters.document_stores.song_store import SongStore
 from common.configuration import Config
 
 logging.getLogger("pymongo.client").setLevel(logging.WARNING)

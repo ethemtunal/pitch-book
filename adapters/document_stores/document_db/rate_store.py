@@ -1,5 +1,5 @@
 from adapters.document_stores.document_db.common import MongoDBClientCommon
-from adapters.document_stores.rates_store import RatingStore
+from adapters.document_stores.rate_store import RatingStore
 from common.types import RatingCreate, RatingEntity
 
 
