@@ -1,12 +1,6 @@
-from abc import ABC, abstractmethod
-
 from adapters.document_stores.document_db.common import MongoDBClientCommon
+from adapters.document_stores.rates_store import RatingStore
 from common.types import RatingCreate, RatingEntity
-
-
-class RatingStore(ABC):
-    @abstractmethod
-    def store(self, rating_create: RatingCreate) -> RatingEntity: ...
 
 
 class MongoRatingStore(RatingStore, MongoDBClientCommon):

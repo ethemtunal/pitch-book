@@ -1,12 +1,6 @@
-from abc import ABC, abstractmethod
-
 from adapters.document_stores.document_db.common import MongoDBClientCommon
+from adapters.document_stores.songs_store import SongStore
 from common.types import SongCreate, SongEntity
-
-
-class SongStore(ABC):
-    @abstractmethod
-    def store(self, song_create: SongCreate) -> SongEntity: ...
 
 
 class MongoSongStore(SongStore, MongoDBClientCommon):

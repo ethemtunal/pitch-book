@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
-from adapters.document_stores.document_db.rates_store import RatingStore
-from adapters.document_stores.document_db.songs_store import SongStore
+from adapters.document_stores.rates_store import RatingStore
+from adapters.document_stores.songs_store import SongStore
 
 
 class DocumentStore(ABC):

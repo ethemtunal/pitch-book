@@ -3,8 +3,10 @@ from datetime import UTC
 import pytest
 from pymongo import MongoClient
 
-from adapters.document_stores.document_db.document_store import get_document_store
-from adapters.document_stores.document_store import DocumentStore
+from adapters.document_stores.document_db.document_store import (
+    DocumentStore,
+    get_document_store,
+)
 from common.configuration import Config
 
 
