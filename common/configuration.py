@@ -1,7 +1,7 @@
-from pydantic import BaseModel
+from pydantic_settings import BaseSettings
 
 
-class Config(BaseModel):
+class Config(BaseSettings):
     document_db_host: str = "localhost"
     document_db_port: int = 27017
     document_db_user: str = "pitch-book"

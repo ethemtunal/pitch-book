@@ -19,7 +19,7 @@ test-container:
       -e MONGO_INITDB_ROOT_PASSWORD=dbpasswd \
       -e MONGO_INITDB_DATABASE=pitch-book-document-db \
       -p 27017:27017 \
-      -d mongo:8.0.4 || true
+      -d mongo:7.0 || true
 
 stop-test-container:
     docker stop $(docker ps -a -q --filter="name=pitch-book-test-mongodb") || true
@@ -29,3 +29,10 @@ rm-test-container:
 
 test-env:
     just stop-test-container rm-test-container test-container
+
+up:
+    just stop-test-container rm-test-container
+    docker compose up --build
+
+down:
+    docker compose down -v

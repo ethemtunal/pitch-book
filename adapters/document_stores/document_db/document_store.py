@@ -1,4 +1,3 @@
-import logging
 from collections.abc import Generator
 from contextlib import contextmanager
 from datetime import UTC
@@ -12,9 +11,6 @@ from adapters.document_stores.document_store import DocumentStore
 from adapters.document_stores.rating_store import RatingStore
 from adapters.document_stores.song_store import SongStore
 from common.configuration import Config
-
-logging.getLogger("pymongo.client").setLevel(logging.WARNING)
-logger = logging.getLogger(__name__)
 
 
 class DocumentDBDocumentStore(DocumentStore):

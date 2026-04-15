@@ -1,0 +1,27 @@
+services:
+  api:
+    build: .
+    ports:
+      - "8000:5000"
+    environment:
+      DOCUMENT_DB_HOST: mongodb
+      DOCUMENT_DB_USER: pitch-book
+      DOCUMENT_DB_PASSWORD: dbpasswd
+      DOCUMENT_DB_NAME: pitch-book-document-db
+    depends_on:
+      mongodb:
+        condition: service_healthy
+
+  mongodb:
+    image: mongo:7.0
+    command: ["mongod", "--quiet"]
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: pitch-book
+      MONGO_INITDB_ROOT_PASSWORD: dbpasswd
+    ports:
+      - "27017:27017"
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
