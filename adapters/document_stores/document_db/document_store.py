@@ -1,6 +1,8 @@
+import json
 from collections.abc import Generator
 from contextlib import contextmanager
 from datetime import UTC
+from pathlib import Path
 
 from pymongo import ASCENDING, TEXT, MongoClient
 from pymongo.synchronous.client_session import ClientSession
@@ -11,6 +13,7 @@ from adapters.document_stores.document_store import DocumentStore
 from adapters.document_stores.rating_store import RatingStore
 from adapters.document_stores.song_store import SongStore
 from common.configuration import Config
+from common.types import SongCreate
 
 
 class DocumentDBDocumentStore(DocumentStore):
@@ -67,5 +70,22 @@ def init_db(uri: str | None = None, db_name: str | None = None) -> None:
         db["song"].create_index([("level", ASCENDING)])
         # optimizing the song_id filter on get_stats
         db["rating"].create_index([("song_id", ASCENDING)])
+
+    finally:
+        client.close()
+
+
+def seed_db(uri: str | None = None, db_name: str | None = None) -> None:
+    config = Config()
+    client: MongoClient = MongoClient(uri or config.document_db_uri)
+    try:
+        db = client[db_name or config.document_db_name]
+        if db["song"].count_documents({}) == 0:
+            songs_path = Path(__file__).resolve().parents[3] / "data" / "songs.json"
+            songs = [
+                SongCreate.model_validate(s).model_dump()
+                for s in json.loads(songs_path.read_text())
+            ]
+            db["song"].insert_many(songs)
     finally:
         client.close()

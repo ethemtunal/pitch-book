@@ -14,18 +14,15 @@ check:
     mypy .
 
 test-container:
-    docker run --name="pitch-book-test-mongodb-$(date +%s)" \
-      -e MONGO_INITDB_ROOT_USERNAME=pitch-book \
-      -e MONGO_INITDB_ROOT_PASSWORD=dbpasswd \
-      -e MONGO_INITDB_DATABASE=pitch-book-document-db \
-      -p 27017:27017 \
-      -d mongo:7.0 || true
+    docker run --detach --name songs_db \
+      --publish 127.0.0.1:27017:27017 \
+      mongo:7.0 || true
 
 stop-test-container:
-    docker stop $(docker ps -a -q --filter="name=pitch-book-test-mongodb") || true
+    docker stop songs_db || true
 
 rm-test-container:
-    docker rm $(docker ps -a -q --filter="name=pitch-book-test-mongodb") || true
+    docker rm songs_db || true
 
 test-env:
     just stop-test-container rm-test-container test-container
