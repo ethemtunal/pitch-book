@@ -33,6 +33,22 @@ uv run pytest
 
 `just test-env` starts a local MongoDB container. Tests clean up after themselves.
 
+## Database
+
+### Indexes
+
+Indexes are created automatically on app startup via `init_db()` (called from `create_app()`):
+
+- `song.artist` + `song.title` compound text index, required for `$text` search
+- `song.level` speeds up average difficulty queries filtered by level
+- `rating.song_id` speeds up rating stats aggregation per song
+
+### Seeding
+
+On startup, `main.py` calls `seed_db()` which loads `data/songs.json` into the `song` collection if it is empty. Each song is validated through Pydantic before insertion, ensuring consistent data types in the database.
+
+For tests, seeding is intentionally skipped each test starts with an empty collection and cleans up after itself.
+
 ## Data validation
 
 All request bodies are validated with [Pydantic](https://docs.pydantic.dev/) before hitting the database. Invalid requests return a `422` with details.
@@ -41,9 +57,9 @@ All request bodies are validated with [Pydantic](https://docs.pydantic.dev/) bef
 
 The test suite covers three layers:
 
-- **Models** — Pydantic validation rules (boundary values, rejection of invalid input)
-- **Stores** — MongoDB operations (find, paginate, aggregate, search) against a real database
-- **Endpoints** — all routes tested via Flask test client including error cases (400, 404, 422)
+- **Models** Pydantic validation rules (boundary values, rejection of invalid input)
+- **Stores** MongoDB operations (find, paginate, aggregate, search) against a real database
+- **Endpoints** all routes tested via Flask test client including error cases (400, 404, 422)
 
 ```bash
 just test-env
