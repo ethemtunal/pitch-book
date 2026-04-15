@@ -127,3 +127,8 @@ class TestGetRatingStats:
     def test_raises_not_found_for_unknown_song(self, service):
         with pytest.raises(NotFound):
             service.get_rating_stats("000000000000000000000000")
+
+    def test_raises_not_found_for_missing_rating(self, service, sample_song):
+        song = service.add_song(sample_song)
+        with pytest.raises(NotFound):
+            service.get_rating_stats(song.id)

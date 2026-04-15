@@ -27,10 +27,11 @@ class SongService:
             raise NotFound(f"Song {song_id} not found")
         self.document_store.rating.store(RatingCreate(song_id=song_id, rating=rating))
 
-    def get_rating_stats(self, song_id: str) -> RatingStats | None:
-        if not self.document_store.song.find_by_id(song_id):
-            raise NotFound(f"Song {song_id} not found")
-        return self.document_store.rating.get_stats(song_id)
+    def get_rating_stats(self, song_id: str) -> RatingStats:
+        stats = self.document_store.rating.get_stats(song_id)
+        if not stats:
+            raise NotFound(f"No ratings found for song {song_id}")
+        return stats
 
 
 def get_song_service(document_store_session: ClientSession) -> SongService:
