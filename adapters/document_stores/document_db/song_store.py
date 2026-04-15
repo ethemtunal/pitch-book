@@ -31,8 +31,11 @@ class MongoSongStore(SongStore, MongoDBClientCommon):
         return SongEntity(_id=str(inserted_id), **song_create.model_dump())
 
     def find_all(self, page_size: int, last_id: str | None = None) -> list[SongEntity]:
-        query = {"_id": {"$gt": ObjectId(last_id)}} if last_id else {}
-        songs = self.collection.find(query).limit(page_size)
+        try:
+            query = {"_id": {"$gt": ObjectId(last_id)}} if last_id else {}
+            songs = self.collection.find(query).limit(page_size)
+        except InvalidId:
+            return []
         return [self._to_dto(s) for s in songs]
 
     def find_by_id(self, song_id: str) -> SongEntity | None:

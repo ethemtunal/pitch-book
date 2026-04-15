@@ -57,6 +57,13 @@ class TestFindAll:
 
         assert result == []
 
+    def test_returns_empty_for_invalid_last_id(self, store, sample_song):
+        store.store(sample_song)
+
+        result = store.find_all(page_size=10, last_id="not-a-valid-id")
+
+        assert result == []
+
 
 class TestFindById:
     def test_store_and_find_by_id(self, store, sample_song):
