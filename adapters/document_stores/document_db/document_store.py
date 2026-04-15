@@ -3,7 +3,7 @@ from collections.abc import Generator
 from contextlib import contextmanager
 from datetime import UTC
 
-from pymongo import MongoClient
+from pymongo import ASCENDING, TEXT, MongoClient
 from pymongo.synchronous.client_session import ClientSession
 
 from adapters.document_stores.document_db.rating_store import MongoRatingStore
@@ -58,3 +58,18 @@ def get_document_store_session(
 
 def get_document_store(client_session: ClientSession) -> DocumentDBDocumentStore:
     return DocumentDBDocumentStore(client_session=client_session)
+
+
+def init_db(uri: str | None = None, db_name: str | None = None) -> None:
+    config = Config()
+    client: MongoClient = MongoClient(uri or config.document_db_uri)
+    try:
+        db = client[db_name or config.document_db_name]
+        # required for text search
+        db["song"].create_index([("artist", TEXT), ("title", TEXT)])
+        # optimizing the level filtering on avg_difficulty
+        db["song"].create_index([("level", ASCENDING)])
+        # optimizing the song_id filter on get_stats
+        db["rating"].create_index([("song_id", ASCENDING)])
+    finally:
+        client.close()

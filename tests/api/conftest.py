@@ -1,8 +1,6 @@
 import pytest
-from pymongo import TEXT
 
 from api.app import create_app
-from common.configuration import Config
 
 
 @pytest.fixture
@@ -13,9 +11,6 @@ def client(document_db_session):
     """
     app = create_app()
     app.config["TESTING"] = True
-
-    db = document_db_session.client[Config().document_db_name]
-    db["song"].create_index([("artist", TEXT), ("title", TEXT)])
 
     with app.test_client() as c:
         yield c
